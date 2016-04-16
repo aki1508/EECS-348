@@ -1,8 +1,7 @@
 # File: Player.py
-# Author(s) names AND netid's:
-# Date:
-# Group work statement: <please type the group work statement
-#      given in the pdf here>
+# Author(s) names AND netid's: Upasna Madhok (umu583), Akshay Batra (abz233)
+# Date: 4/16/2016
+# Group work statement:  “All group members were present and contributing during all work on this project.”
 # Defines a simple artificially intelligent player agent
 # You will define the alpha-beta pruning search algorithm
 # You will also define the score function in the MancalaPlayer class,
@@ -169,7 +168,7 @@ class Player:
 
 
 # Note, you should change the name of this player to be your netid
-class MancalaPlayer(Player):
+class umu583(Player):
     """ Defines a player that knows how to evaluate a Mancala gameboard
         intelligently """
 
@@ -178,5 +177,8 @@ class MancalaPlayer(Player):
         # Currently this function just calls Player's score
         # function.  You should replace the line below with your own code
         # for evaluating the board
-        print "Calling score in MancalaPlayer"
-        return Player.score(self, board)
+        Player1 = self.num
+        if Player1 == 1:
+            return board.scoreCups[Player1-1] - board.scoreCups[Player1]
+        else:
+            return board.scoreCups[Player1] - board.scoreCups[Player1-1];

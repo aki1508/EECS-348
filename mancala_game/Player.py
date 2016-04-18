@@ -1,7 +1,7 @@
 # File: Player.py
 # Author(s) names AND netid's: Upasna Madhok (umu583), Akshay Batra (abz233)
 # Date: 4/16/2016
-# Group work statement:  “All group members were present and contributing during all work on this project.”
+# Group work statement: "All group members were present and contributing "
 # Defines a simple artificially intelligent player agent
 # You will define the alpha-beta pruning search algorithm
 # You will also define the score function in the MancalaPlayer class,
@@ -177,8 +177,20 @@ class umu583(Player):
         # Currently this function just calls Player's score
         # function.  You should replace the line below with your own code
         # for evaluating the board
-        Player1 = self.num
-        if Player1 == 1:
-            return board.scoreCups[Player1-1] - board.scoreCups[Player1]
+        stateScore = 0
+        player_number = self.num
+        stateScore += board.scoreCups[0] - board.scoreCups[1]
+        stateScore += sum(board.P1Cups) - sum(board.P2Cups)
+        for index in range(len(board.P1Cups)):
+            # if board.P1Cups[index] == 0:
+            #     stateScore += 1
+            # if board.P2Cups[index] == 0:
+            #     stateScore -= 1
+            if board.P1Cups[index] == 0 and board.P2Cups[5 - index] != 0:
+                stateScore += 1
+            if board.P1Cups[index] != 0 and board.P2Cups[5 - index] == 0:
+                stateScore -= 1
+        if player_number == 1:
+            return stateScore
         else:
-            return board.scoreCups[Player1] - board.scoreCups[Player1-1];
+            return -stateScore

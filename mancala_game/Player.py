@@ -135,19 +135,22 @@ class Player:
         move = -1
         score = -INFINITY
         turn = self
+        #try the move
+        alpha = -INFINITY
+        beta = INFINITY
+
         for m in board.legalMoves(self):
             #for each legal move
             if ply == 0:
                 #if we're at ply 0, we need to call our eval function & return
-                return (self.score(board), m)
+                return (turn.score(board), m)
             if board.gameOver():
                 return (-1, -1)  # Can't make a move, the game is over
+
             nb = deepcopy(board)
             #make a new board
             nb.makeMove(self, m)
-            #try the move
-            alpha = -INFINITY
-            beta = INFINITY
+
             opp = Player(self.opp, self.type, self.ply)
             s = opp.MINValue(nb, ply-1, turn, alpha, beta)
             #and see what the opponent would do next
@@ -161,9 +164,11 @@ class Player:
     def MAXValue(self, board, ply, turn, alpha, beta):
         """ Find the minimax value for the next move for this player
         at a given board configuation. Returns score."""
+
+        v = -INFINITY
         if board.gameOver():
             return turn.score(board)
-        v = -INFINITY
+
         for m in board.legalMoves(self):
             if ply == 0:
                 #print "turn.score(board) in max value is: " + str(turn.score(board))
@@ -175,20 +180,22 @@ class Player:
             nextBoard.makeMove(self, m)
             s = opponent.MINValue(nextBoard, ply-1, turn, alpha, beta)
             #print "s in maxValue is: " + str(s)
-            if s >= v:
+            if s > v:
                 v = s
             if v >= beta:
                 return v
-            if s >= alpha:
-                alpha = s
+            if alpha < v:
+                alpha = v
         return s
 
     def MINValue(self, board, ply, turn, alpha, beta):
         """ Find the minimax value for the next move for this player
             at a given board configuation. Returns score."""
+
+        v = INFINITY
         if board.gameOver():
             return turn.score(board)
-        v = INFINITY
+
         for m in board.legalMoves(self):
             if ply == 0:
                 #print "turn.score(board) in min Value is: " + str(turn.score(board))
@@ -200,11 +207,13 @@ class Player:
             nextBoard.makeMove(self, m)
             s = opponent.MAXValue(nextBoard, ply-1, turn, alpha, beta)
             #print "s in minValue is: " + str(s)
-            if v >= s:
+            if s < v:
                 v = s
+
             if v <= alpha:
                 return v
-            if beta <= v:
+
+            if beta > v:
                 beta = v
         return v
 

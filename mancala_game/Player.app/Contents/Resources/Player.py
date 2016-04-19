@@ -142,13 +142,14 @@ class Player:
             #for each legal move
             if ply == 0:
                 #if we're at ply 0, we need to call our eval function & return
-                return (self.score(board), m)
+                return (turn.score(board), m)
             if board.gameOver():
                 return (-1, -1)  # Can't make a move, the game is over
+
             nb = deepcopy(board)
             #make a new board
             nb.makeMove(self, m)
-            #try the move
+
             opp = Player(self.opp, self.type, self.ply)
             s = opp.MINValue(nb, ply-1, turn, alpha, beta)
             #and see what the opponent would do next
@@ -162,9 +163,11 @@ class Player:
     def MAXValue(self, board, ply, turn, alpha, beta):
         """ Find the minimax value for the next move for this player
         at a given board configuation. Returns score."""
+
+        v = -INFINITY
         if board.gameOver():
             return turn.score(board)
-        v = -INFINITY
+
         for m in board.legalMoves(self):
             if ply == 0:
                 #print "turn.score(board) in max value is: " + str(turn.score(board))
@@ -180,16 +183,18 @@ class Player:
                 v = s
             if v >= beta:
                 return v
-            if v > alpha:
+            if alpha < v:
                 alpha = v
-        return v
+        return s
 
     def MINValue(self, board, ply, turn, alpha, beta):
         """ Find the minimax value for the next move for this player
             at a given board configuation. Returns score."""
+
+        v = INFINITY
         if board.gameOver():
             return turn.score(board)
-        v = INFINITY
+
         for m in board.legalMoves(self):
             if ply == 0:
                 #print "turn.score(board) in min Value is: " + str(turn.score(board))
@@ -203,6 +208,7 @@ class Player:
             #print "s in minValue is: " + str(s)
             if s < v:
                 v = s
+
             if v <= alpha:
                 return v
             if beta > v:
@@ -230,9 +236,13 @@ class Player:
             print "chose move", move, " with value", val
             return move
         elif self.type == self.CUSTOM:
-            val, move = self.alphaBetaMove(board, self.ply)
-            print "chose move", move, " with value", val
-            return move
+            # TODO: Implement a custom player
+            # You should fill this in with a call to your best move choosing
+            # function.  You may use whatever search algorithm and scoring
+            # algorithm you like.  Remember that your player must make
+            # each move in about 10 seconds or less.
+            print "Custom player not yet implemented"
+            return -1
         else:
             print "Unknown player type"
             return -1

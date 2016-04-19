@@ -135,6 +135,9 @@ class Player:
         move = -1
         score = -INFINITY
         turn = self
+        alpha = -INFINITY
+        beta = INFINITY
+
         for m in board.legalMoves(self):
             #for each legal move
             if ply == 0:
@@ -146,8 +149,6 @@ class Player:
             #make a new board
             nb.makeMove(self, m)
             #try the move
-            alpha = -INFINITY
-            beta = INFINITY
             opp = Player(self.opp, self.type, self.ply)
             s = opp.MINValue(nb, ply-1, turn, alpha, beta)
             #and see what the opponent would do next
@@ -175,13 +176,13 @@ class Player:
             nextBoard.makeMove(self, m)
             s = opponent.MINValue(nextBoard, ply-1, turn, alpha, beta)
             #print "s in maxValue is: " + str(s)
-            if s >= v:
+            if s > v:
                 v = s
             if v >= beta:
                 return v
-            if s >= alpha:
-                alpha = s
-        return s
+            if v > alpha:
+                alpha = v
+        return v
 
     def MINValue(self, board, ply, turn, alpha, beta):
         """ Find the minimax value for the next move for this player
@@ -200,11 +201,11 @@ class Player:
             nextBoard.makeMove(self, m)
             s = opponent.MAXValue(nextBoard, ply-1, turn, alpha, beta)
             #print "s in minValue is: " + str(s)
-            if v >= s:
+            if s < v:
                 v = s
             if v <= alpha:
                 return v
-            if beta <= v:
+            if beta > v:
                 beta = v
         return v
 

@@ -1,7 +1,7 @@
 # File: Player.py
 # Author(s) names AND netid's: Upasna Madhok (umu583), Akshay Batra (abz233)
 # Date: 4/16/2016
-# Group work statement: "All group members were present and contributing "
+# Group work statement: "All group members were present and contributing during all work on this project"
 # Defines a simple artificially intelligent player agent
 # You will define the alpha-beta pruning search algorithm
 # You will also define the score function in the MancalaPlayer class,

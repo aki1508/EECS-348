@@ -200,7 +200,7 @@ class Player:
             nextBoard.makeMove(self, m)
             s = opponent.MAXValue(nextBoard, ply-1, turn, alpha, beta)
             #print "s in minValue is: " + str(s)
-            if v <= s:
+            if v >= s:
                 v = s
             if v <= alpha:
                 return v

@@ -130,9 +130,83 @@ class Player:
     # and/or a different move search order.
     def alphaBetaMove(self, board, ply):
         """ Choose a move with alpha beta pruning.  Returns (score, move) """
-        print "Alpha Beta Move not yet implemented"
-        #returns the score adn the associated moved
-        return (-1,1)
+        # print "Alpha Beta Move not yet implemented"
+        # #returns the score adn the associated moved
+        move = -1
+        score = -INFINITY
+        turn = self
+        for m in board.legalMoves(self):
+            #for each legal move
+            if ply == 0:
+                #if we're at ply 0, we need to call our eval function & return
+                return (self.score(board), m)
+            if board.gameOver():
+                return (-1, -1)  # Can't make a move, the game is over
+            nb = deepcopy(board)
+            #make a new board
+            nb.makeMove(self, m)
+            #try the move
+            alpha = -INFINITY
+            beta = INFINITY
+            opp = Player(self.opp, self.type, self.ply)
+            s = opp.MINValue(nb, ply-1, turn, alpha, beta)
+            #and see what the opponent would do next
+            if s > score:
+                #if the result is better than our best score so far, save that move,score
+                move = m
+                score = s
+        #return the best score and move so far
+        return score, move
+
+    def MAXValue(self, board, ply, turn, alpha, beta):
+        """ Find the minimax value for the next move for this player
+        at a given board configuation. Returns score."""
+        if board.gameOver():
+            return turn.score(board)
+        v = -INFINITY
+        for m in board.legalMoves(self):
+            if ply == 0:
+                #print "turn.score(board) in max value is: " + str(turn.score(board))
+                return turn.score(board)
+            # make a new player to play the other side
+            opponent = Player(self.opp, self.type, self.ply)
+            # Copy the board so that we don't ruin it
+            nextBoard = deepcopy(board)
+            nextBoard.makeMove(self, m)
+            s = opponent.MINValue(nextBoard, ply-1, turn, alpha, beta)
+            #print "s in maxValue is: " + str(s)
+            if s >= v:
+                v = s
+            if v >= beta:
+                return v
+            if s >= alpha:
+                alpha = s
+        return s
+
+    def MINValue(self, board, ply, turn, alpha, beta):
+        """ Find the minimax value for the next move for this player
+            at a given board configuation. Returns score."""
+        if board.gameOver():
+            return turn.score(board)
+        v = INFINITY
+        for m in board.legalMoves(self):
+            if ply == 0:
+                #print "turn.score(board) in min Value is: " + str(turn.score(board))
+                return turn.score(board)
+            # make a new player to play the other side
+            opponent = Player(self.opp, self.type, self.ply)
+            # Copy the board so that we don't ruin it
+            nextBoard = deepcopy(board)
+            nextBoard.makeMove(self, m)
+            s = opponent.MAXValue(nextBoard, ply-1, turn, alpha, beta)
+            #print "s in minValue is: " + str(s)
+            if v <= s:
+                v = s
+            if v <= alpha:
+                return v
+            if beta <= v:
+                beta = v
+        return v
 
     def chooseMove(self, board):
         """ Returns the next move that this player wants to make """

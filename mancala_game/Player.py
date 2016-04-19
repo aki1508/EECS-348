@@ -135,7 +135,10 @@ class Player:
         move = -1
         score = -INFINITY
         turn = self
+<<<<<<< HEAD
         #try the move
+=======
+>>>>>>> 5d445d565a89ebfac9ab63c67d9949eb57e35e5f
         alpha = -INFINITY
         beta = INFINITY
 
@@ -150,7 +153,11 @@ class Player:
             nb = deepcopy(board)
             #make a new board
             nb.makeMove(self, m)
+<<<<<<< HEAD
 
+=======
+            #try the move
+>>>>>>> 5d445d565a89ebfac9ab63c67d9949eb57e35e5f
             opp = Player(self.opp, self.type, self.ply)
             s = opp.MINValue(nb, ply-1, turn, alpha, beta)
             #and see what the opponent would do next
@@ -184,9 +191,15 @@ class Player:
                 v = s
             if v >= beta:
                 return v
+<<<<<<< HEAD
             if alpha < v:
                 alpha = v
         return s
+=======
+            if v > alpha:
+                alpha = v
+        return v
+>>>>>>> 5d445d565a89ebfac9ab63c67d9949eb57e35e5f
 
     def MINValue(self, board, ply, turn, alpha, beta):
         """ Find the minimax value for the next move for this player
@@ -212,8 +225,12 @@ class Player:
 
             if v <= alpha:
                 return v
+<<<<<<< HEAD
 
             if beta > v:
+=======
+            if beta > v:
+>>>>>>> 5d445d565a89ebfac9ab63c67d9949eb57e35e5f
                 beta = v
         return v
 
